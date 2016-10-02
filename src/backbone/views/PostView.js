@@ -1,11 +1,13 @@
 import { dispatch } from '../../dispatch';
-import { deletePost, editPost, navigateEditPost } from '../../redux/actions';
-export default class PostView extends Backbone.View{
+import { deletePost, editPost, navigateEditPost, setRoute } from '../../redux/actions';
+import  AppView from '../lib/AppView';
+export default class PostView extends AppView{
   get template(){ return require("../../templates/post.ejs") }
   get events(){
     return {
     "click .editPost" : "edit",
-    "click .destroyPost" : "destroy"
+    "click .destroyPost" : "destroy",
+    "click .showPost" : "show"
     };
   }
   get tagName(){ return "tr"; }
@@ -27,8 +29,15 @@ export default class PostView extends Backbone.View{
     dispatch(navigateEditPost(this.model.id));
   }
 
+  show(e){
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setRoute(`/${this.model.id}`));
+  }
+
   render(){
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(this.template());
+    this.bindValue(this.model.toJSON());
     return this;
   }
 }

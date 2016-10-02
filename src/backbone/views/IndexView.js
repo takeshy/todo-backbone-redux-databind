@@ -2,14 +2,11 @@ import PostView from './PostView';
 import $ from 'jquery';
 import { dispatch } from '../../dispatch';
 import { navigateNewPost } from '../../redux/actions';
-export default class IndexView extends Backbone.View {
+import  AppView from '../lib/AppView';
+export default class IndexView extends AppView {
   get template(){ return require("../../templates/index.ejs") }
 
-  events(){
-    return {
-      "click .newPost": "navigateNew",
-    }
-  }
+  events(){ return { "click .newPost": "navigateNew"}; }
 
   initialize(){
     this.childViews = [];

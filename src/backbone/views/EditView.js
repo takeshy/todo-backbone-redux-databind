@@ -1,25 +1,13 @@
 import $ from 'jquery';
 import { dispatch } from '../../dispatch';
 import { setRoute, setPost, updatePost } from '../../redux/actions';
+import  AppView from '../lib/AppView';
+import  FormView from './FormView';
 
-export default class EditView extends Backbone.View {
+export default class EditView extends AppView {
   get template(){ return require("../../templates/edit.ejs"); }
 
-  get events(){
-    return {
-      "click #updateBtn" : "update",
-      "change #title": "changeTitle",
-      "change #content": "changeContent"
-    }
-  }
-
-  changeTitle(e){
-    dispatch(setPost({ "title": $(e.currentTarget).val() }));
-  }
-
-  changeContent(e){
-    dispatch(setPost({ "content": $(e.currentTarget).val() }));
-  }
+  events(){ return {"click #updateBtn" : "update"}; }
 
   update(e){
     e.preventDefault();
@@ -29,7 +17,9 @@ export default class EditView extends Backbone.View {
   }
 
   render(){
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(this.template());
+    const view = new FormView({ model: this.model });
+    this.$('.form').html(view.render().el);
     return this;
   }
 }

@@ -2,5 +2,4 @@ node_modules
 scripts/*
 *.swp
 *~
-dist/*
 npm-debug.log
