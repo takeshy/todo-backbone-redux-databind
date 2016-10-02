@@ -1,11 +1,19 @@
 import PostView from './PostView';
 import $ from 'jquery';
+import { dispatch } from '../../dispatch';
+import { navigateNewPost } from '../../redux/actions';
 export default class IndexView extends Backbone.View {
   get template(){ return require("../../templates/index.ejs") }
 
+  events(){
+    return {
+      "click .newPost": "navigateNew",
+    }
+  }
+
   initialize(){
     this.childViews = [];
-    this.listenTo(this.collection,'change', this.addOne)
+    this.listenTo(this.collection,'remove', this.removeOne)
   }
 
   addAll(){
@@ -16,6 +24,18 @@ export default class IndexView extends Backbone.View {
     const view = new PostView({model : post});
     this.$("tbody").append(view.render().el);
     this.childViews.push(view)
+  }
+
+  removeOne(post){
+    const idx = this.childViews.findIndex((view)=> view.model.id == post.id);
+    const views = this.childViews.splice(idx, 1);
+    views.forEach((view)=> view.remove());
+  }
+
+  navigateNew(e){
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(navigateNewPost());
   }
 
   remove(){

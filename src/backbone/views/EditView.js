@@ -1,26 +1,31 @@
+import $ from 'jquery';
+import { dispatch } from '../../dispatch';
+import { setRoute, setPost, updatePost } from '../../redux/actions';
+
 export default class EditView extends Backbone.View {
   get template(){ return require("../../templates/edit.ejs"); }
 
   get events(){
     return {
-      "submit #edit-post" : "update",
+      "click #updateBtn" : "update",
       "change #title": "changeTitle",
       "change #content": "changeContent"
     }
   }
 
   changeTitle(e){
-    this.model.set("title",e.target.value);
+    dispatch(setPost({ "title": $(e.currentTarget).val() }));
   }
 
   changeContent(e){
-    this.model.set("content",e.target.value);
+    dispatch(setPost({ "content": $(e.currentTarget).val() }));
   }
 
   update(e){
     e.preventDefault();
     e.stopPropagation();
-    window.location.hash = `/${this.model.id}`;
+    dispatch(updatePost(this.model.toJSON()));
+    dispatch(setRoute(`/${this.model.id}`));
   }
 
   render(){

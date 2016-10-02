@@ -1,10 +1,11 @@
-import { Post } from '../models/Post'
 import $ from 'jquery';
+import { dispatch } from '../../dispatch';
+import { setRoute, setPost, createPost } from '../../redux/actions';
 
 export default class NewView extends Backbone.View {
   get template(){ return require("../../templates/new.ejs") }
 
-  events(){ 
+  events(){
     return {
       "click #createBtn": "createPost",
       "change #title": "changeTitle",
@@ -13,20 +14,19 @@ export default class NewView extends Backbone.View {
   }
 
   changeTitle(e){
-    this.model.set("title", $(e.currentTarget).val());
+    dispatch(setPost({ "title": $(e.currentTarget).val() }));
   }
 
   changeContent(e){
-    this.model.set("content", $(e.currentTarget).val());
+    dispatch(setPost({ "content": $(e.currentTarget).val() }));
   }
 
   createPost(e){
     e.preventDefault();
     e.stopPropagation();
     const id = new Date().getTime();
-    this.collection.add(Object.assign(this.model.toJSON(),{ id: id }));
-    this.model.set({id: null, title: null, content: null});
-    window.location.hash = `/${id}` 
+    dispatch(createPost(Object.assign(this.model.toJSON(), { id })));
+    dispatch(setRoute(`/${id}`));
   }
 
   render(){

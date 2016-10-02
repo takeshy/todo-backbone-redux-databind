@@ -1,19 +1,16 @@
 <h1>Edit post</h1>
-
-<form id="edit-post",name="post">
-  <div class="field">
-    <input type="hidden" value="<%=id %>">
-    <label> Title:
-      <input type = "text" name='title' id="title" value="<%=title%>">
-   </label>
-  </div>
-  <div class="field">
-    <label> Content:
-      <input type="text" name='content' id="content" value="<%=content%>">
-    </label>
-  </div>
-  <div class="actions">
-    <input type='submit' value="Update Post">
-  </div>
-</form>
-<a href="#/index">Back</a>
+<div class="field">
+  <input type="hidden" value="<%=id %>">
+  <label> Title:
+    <input type = "text" name='title' id="title" value="<%=title%>">
+  </label>
+</div>
+<div class="field">
+  <label> Content:
+    <input type="text" name='content' id="content" value="<%=content%>">
+  </label>
+</div>
+<div class="actions">
+  <input id="updateBtn" type='button' value="Update Post">
+</div>
+<span class="navigate" data-path="/">Back</span>
